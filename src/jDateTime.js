@@ -1,5 +1,4 @@
-(function()
-{
+
     /*
         ELI DateTime Plugins
         created by Gojecks Joseph
@@ -17,7 +16,7 @@
     'use strict';
 
 
-    var moduleName = 'jEli.Date.Time',
+    var moduleName = 'jeli.date.time',
         module;
     try{
         module = jEli.jModule(moduleName);
@@ -68,7 +67,3 @@ function calendarFN($dateTimeFactory)
         }
     }
 }
-
-
-
-})();

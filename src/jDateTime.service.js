@@ -1,4 +1,3 @@
-(function(){
 
 	/*
         ELI DateTime Plugins
@@ -10,11 +9,8 @@
        
     */
 		
-	'use strict';
 
-
-	jEli
-	.jModule('jEli.Date.Time')
+	module
 	.jFactory('dateTimeFactory',['dateTimeMonthHalf','dateTimeMonthFull','dateTimeDayHalf','dateTimeDayFull',bndateTimeFactoryFN]);
 
 
@@ -337,6 +333,3 @@
 
 	    return this;
 	}
-
-
-})();
