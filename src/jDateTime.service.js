@@ -10,10 +10,16 @@
 
 
 module
-    .jFactory('dateTimeFactory', ['dateTimeMonthHalf', 'dateTimeMonthFull', 'dateTimeDayHalf', 'dateTimeDayFull', bndateTimeFactoryFN]);
+    .service('dateTimeFactory', ['dateTimeMonthHalf', 'dateTimeMonthFull', 'dateTimeDayHalf', 'dateTimeDayFull', bndateTimeFactoryFN]);
 
 
-
+/**
+ * 
+ * @param {*} dateTimeMonthHalf 
+ * @param {*} dateTimeMonthFull 
+ * @param {*} dateTimeDayHalf 
+ * @param {*} dateTimeDayFull 
+ */
 function bndateTimeFactoryFN(dateTimeMonthHalf, dateTimeMonthFull, dateTimeDayHalf, dateTimeDayFull) {
     var dateFormatRegExp = /D{1,4}|M{1,4}|YY(?:YY)?|([HhMmsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g;
 
@@ -126,9 +132,9 @@ function bndateTimeFactoryFN(dateTimeMonthHalf, dateTimeMonthFull, dateTimeDayHa
             return (Number(d) < 10) ? parseInt(d) : Number(d);
         }
 
-        if (jEli.$isString(str)) {
+        if (jeli.$isString(str)) {
             var arr = str.match(/(\d+)-(\d+)-(\d+) (\d+):(\d+):(\d+)/);
-            if (!jEli.$isNull(arr) && arr) {
+            if (!jeli.$isNull(arr) && arr) {
                 arr.shift();
 
                 return new Date(arr[0], (arr[1] - 1), setDay(arr[2]), arr[3] || 0, arr[4] || 0, arr[5] || 0);
@@ -164,7 +170,7 @@ function bndateTimeFactoryFN(dateTimeMonthHalf, dateTimeMonthFull, dateTimeDayHa
 
     this.$timeConverter = function(n) {
         //n (Time) is undefined
-        if (jEli.$isUndefined(n)) {
+        if (jeli.$isUndefined(n)) {
             n = this.$dateTime();
         }
 

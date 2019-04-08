@@ -15,35 +15,34 @@
 'use strict';
 
 
-var moduleName = 'jeli.date.time',
-    module;
-try {
-    module = jEli.jModule(moduleName);
-} catch (e) {
-    module = jEli.jModule(moduleName, {});
-}
-
-module
-    .jValue('dateTimeMonthHalf', new Array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'))
-    .jValue('dateTimeMonthFull', new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'))
-    .jValue('dateTimeDayHalf', new Array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'))
-    .jValue('dateTimeDayFull', new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'))
-    .jFilter('dateTime', ['dateTimeFactory', dateTimeFilterFN])
-    .jFilter('timeAgo', ['dateTimeFactory', timeAgoFilterFn])
-    .jElement('calendar', ['dateTimeFactory', calendarFN]);
+var module = jeli('jeli.date.time', {})
+    .value('dateTimeMonthHalf', new Array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'))
+    .value('dateTimeMonthFull', new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'))
+    .value('dateTimeDayHalf', new Array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'))
+    .value('dateTimeDayFull', new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'))
+    .service('dateTime', ['dateTimeFactory', dateTimeFilterFN])
+    .service('timeAgo', ['dateTimeFactory', timeAgoFilterFn])
+    .element({
+        selector: 'calendar',
+        DI: ['dateTimeFactory'],
+        props: [{
+            name: 'config',
+            value: 'config'
+        }]
+    }, calendarFN);
 
 function dateTimeFilterFN(dateTimeFactory) {
-    return function(text, replacer) {
+    this.compile = function(text, replacer) {
         return dateTimeFactory.format(dateTimeFactory.$dateTime(text))(replacer);
-    }
+    };
 }
 
 //timeAgoFilterFn
 //@result converts date to timeago
 function timeAgoFilterFn(dateTimeFactory) {
-    return function(text) {
+    this.compile = function(text) {
         return dateTimeFactory.$timeConverter(text).timeago;
-    }
+    };
 }
 
 function calendarFN($dateTimeFactory) {
@@ -51,12 +50,9 @@ function calendarFN($dateTimeFactory) {
         fullYear: !1,
         year: new Date().getFullYear()
     };
-
-    return {
-        allowType: 'AE',
-        $init: function(ele, attr, model) {
-            var config = jEli.$extend(defaultConfig, model.$evaluate(attr.config));
-            model.calendar = $dateTimeFactory.buildFullCalendar(config);
-        }
-    }
+    this.config = '';
+    this.didInit = function() {
+        var config = jeli.$extend(defaultConfig, this.config);
+        this.calendar = $dateTimeFactory.buildFullCalendar(config);
+    };
 }
